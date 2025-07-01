@@ -1,86 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, RefreshCw } from 'lucide-react';
+
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+interface FormErrors {
+  [key: string]: string;
+}
+
+interface ContactInfo {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  content: string;
+  href: string;
+}
 
 const Contact: React.FC = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
-  
-  const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     subject: '',
     message: ''
   });
-  
+
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [submitMessage, setSubmitMessage] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors: {[key: string]: string} = {};
-    
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
-    }
-    
-    if (!formData.subject.trim()) {
-      newErrors.subject = 'Subject is required';
-    }
-    
-    if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 3000);
-  };
-
-  const contactInfo = [
+  // Memoized contact info to prevent unnecessary re-renders
+  const contactInfo: ContactInfo[] = useMemo(() => [
     {
       icon: Mail,
       title: 'Email',
@@ -91,7 +49,7 @@ const Contact: React.FC = () => {
       icon: Phone,
       title: 'Phone',
       content: '+977 981-4318510',
-      href: 'tel:+15551234567'
+      href: 'tel:+9779814318510'
     },
     {
       icon: MapPin,
@@ -99,12 +57,188 @@ const Contact: React.FC = () => {
       content: 'Nepal',
       href: '#'
     }
-  ];
+  ], []);
+
+  // Optimized input sanitization
+  const sanitizeInput = useCallback((input: string): string => {
+    return input.trim().replace(/[<>]/g, '');
+  }, []);
+
+  // Enhanced validation with better error messages
+  const validateForm = useCallback((data: FormData): FormErrors => {
+    const newErrors: FormErrors = {};
+
+    // Name validation
+    const name = data.name.trim();
+    if (!name) {
+      newErrors.name = 'Name is required';
+    } else if (name.length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+    } else if (name.length > 50) {
+      newErrors.name = 'Name must be less than 50 characters';
+    }
+
+    // Email validation
+    const email = data.email.trim();
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        newErrors.email = 'Please enter a valid email address';
+      } else if (email.length > 100) {
+        newErrors.email = 'Email must be less than 100 characters';
+      }
+    }
+
+    // Subject validation
+    const subject = data.subject.trim();
+    if (!subject) {
+      newErrors.subject = 'Subject is required';
+    } else if (subject.length < 3) {
+      newErrors.subject = 'Subject must be at least 3 characters';
+    } else if (subject.length > 100) {
+      newErrors.subject = 'Subject must be less than 100 characters';
+    }
+
+    // Message validation
+    const message = data.message.trim();
+    if (!message) {
+      newErrors.message = 'Message is required';
+    } else if (message.length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+    } else if (message.length > 1000) {
+      newErrors.message = 'Message must be less than 1000 characters';
+    }
+
+    return newErrors;
+  }, []);
+
+  // Optimized input change handler
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    const sanitizedValue = sanitizeInput(value);
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: sanitizedValue
+    }));
+
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  }, [errors, sanitizeInput]);
+
+  // Enhanced API submission with better error handling
+  const submitToAPI = useCallback(async (data: FormData) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+    try {
+      const response = await fetch('http://localhost:3000/api/contact/post/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 422 && responseData.errors) {
+          // Handle validation errors from server
+          const serverErrors: FormErrors = {};
+          responseData.errors.forEach((err: { param: string; msg: string }) => {
+            serverErrors[err.param] = err.msg;
+          });
+          throw { type: 'validation', errors: serverErrors };
+        } else if (response.status >= 500) {
+          throw { type: 'server', message: 'Server error. Please try again later.' };
+        } else {
+          throw { type: 'client', message: responseData.message || 'Something went wrong. Please try again.' };
+        }
+      }
+
+      return {
+        success: true,
+        message: responseData.message || 'Message sent successfully! We\'ll get back to you within 24 hours.'
+      };
+    } catch (error: any) {
+      clearTimeout(timeoutId);
+      
+      if (error.name === 'AbortError') {
+        throw { type: 'timeout', message: 'Request timed out. Please check your connection and try again.' };
+      }
+      
+      if (error.type) {
+        throw error;
+      }
+      
+      // Network or other errors
+      throw { 
+        type: 'network', 
+        message: 'Network error. Please check your connection and try again.' 
+      };
+    }
+  }, []);
+
+  // Optimized form submission handler
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate form
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      // Focus on first error field
+      const firstErrorField = Object.keys(validationErrors)[0];
+      const element = document.getElementById(firstErrorField);
+      element?.focus();
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrors({});
+    setSubmitMessage('');
+
+    try {
+      const result = await submitToAPI(formData);
+      setIsSubmitted(true);
+      setSubmitMessage(result.message);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error: any) {
+      console.error('Form submission error:', error);
+      
+      if (error.type === 'validation' && error.errors) {
+        setErrors(error.errors);
+      } else {
+        setSubmitMessage(error.message || 'Something went wrong. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [formData, validateForm, submitToAPI]);
+
+  // Reset form handler
+  const resetForm = useCallback(() => {
+    setFormData({ name: '', email: '', subject: '', message: '' });
+    setErrors({});
+    setIsSubmitted(false);
+    setSubmitMessage('');
+  }, []);
 
   return (
     <section id="contact" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-navy-800 relative overflow-hidden">
       <div className="absolute inset-0 bg-navy-800"></div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -134,7 +268,7 @@ const Contact: React.FC = () => {
             <div>
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Get in Touch</h3>
               <p className="text-white/80 leading-relaxed mb-6 sm:mb-8">
-                We'd love to hear from you. Whether you have a project in mind or just want to chat 
+                We'd love to hear from you. Whether you have a project in mind or just want to chat
                 about possibilities, don't hesitate to reach out.
               </p>
             </div>
@@ -181,7 +315,14 @@ const Contact: React.FC = () => {
               >
                 <CheckCircle className="w-12 h-12 sm:w-16 sm:h-16 text-green-500 mx-auto mb-4" aria-hidden="true" />
                 <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Message Sent!</h3>
-                <p className="text-white/80">Thank you for reaching out. We'll get back to you soon.</p>
+                <p className="text-white/80 mb-6">{submitMessage || 'Thank you for reaching out. We\'ll get back to you soon.'}</p>
+                <button
+                  onClick={resetForm}
+                  className="inline-flex items-center px-4 py-2 text-purple hover:text-white border border-purple hover:bg-purple rounded-lg transition-colors duration-200"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Send Another Message
+                </button>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" noValidate>
@@ -204,7 +345,9 @@ const Contact: React.FC = () => {
                       aria-invalid={errors.name ? 'true' : 'false'}
                     />
                     {errors.name && (
-                      <p id="name-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">{errors.name}</p>
+                      <p id="name-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">
+                        {errors.name}
+                      </p>
                     )}
                   </div>
 
@@ -226,7 +369,9 @@ const Contact: React.FC = () => {
                       aria-invalid={errors.email ? 'true' : 'false'}
                     />
                     {errors.email && (
-                      <p id="email-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">{errors.email}</p>
+                      <p id="email-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">
+                        {errors.email}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -249,7 +394,9 @@ const Contact: React.FC = () => {
                     aria-invalid={errors.subject ? 'true' : 'false'}
                   />
                   {errors.subject && (
-                    <p id="subject-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">{errors.subject}</p>
+                    <p id="subject-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">
+                      {errors.subject}
+                    </p>
                   )}
                 </div>
 
@@ -271,9 +418,17 @@ const Contact: React.FC = () => {
                     aria-invalid={errors.message ? 'true' : 'false'}
                   />
                   {errors.message && (
-                    <p id="message-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">{errors.message}</p>
+                    <p id="message-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">
+                      {errors.message}
+                    </p>
                   )}
                 </div>
+
+                {submitMessage && !isSubmitted && (
+                  <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg">
+                    <p className="text-red-300 text-sm">{submitMessage}</p>
+                  </div>
+                )}
 
                 <button
                   type="submit"
