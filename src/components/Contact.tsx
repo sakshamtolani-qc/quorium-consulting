@@ -61,8 +61,8 @@ const Contact: React.FC = () => {
 
   // Optimized input sanitization
   const sanitizeInput = useCallback((input: string): string => {
-    return input.trim().replace(/[<>]/g, '');
-  }, []);
+  return input.replace(/[<>]/g, ''); // Don't trim here
+}, []);
 
   // Enhanced validation with better error messages
   const validateForm = useCallback((data: FormData): FormErrors => {
@@ -133,10 +133,9 @@ const Contact: React.FC = () => {
     }
   }, [errors, sanitizeInput]);
 
-  // Enhanced API submission with better error handling
   const submitToAPI = useCallback(async (data: FormData) => {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     try {
       const response = await fetch('http://localhost:3000/api/contact/post/message', {
@@ -172,8 +171,7 @@ const Contact: React.FC = () => {
         message: responseData.message || 'Message sent successfully! We\'ll get back to you within 24 hours.'
       };
     } catch (error: any) {
-      clearTimeout(timeoutId);
-      
+      clearTimeout(timeoutId);      
       if (error.name === 'AbortError') {
         throw { type: 'timeout', message: 'Request timed out. Please check your connection and try again.' };
       }
