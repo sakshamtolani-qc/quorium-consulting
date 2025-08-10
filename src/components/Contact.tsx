@@ -42,19 +42,19 @@ const Contact: React.FC = () => {
     {
       icon: Mail,
       title: 'Email',
-      content: 'nexora.contacts@gmail.com',
-      href: 'mailto:nexora.contacts@gmail.com'
+      content: 'quoriumconsulting@gmail.com',
+      href: 'mailto:quoriumconsulting@gmail.com'
     },
     {
       icon: Phone,
       title: 'Phone',
-      content: '+977 981-4318510',
-      href: 'tel:+9779814318510'
+      content: '+91 9999999999',
+      href: 'tel:+919999999999'
     },
     {
       icon: MapPin,
       title: 'Location',
-      content: 'Nepal',
+      content: 'India',
       href: '#'
     }
   ], []);
@@ -218,7 +218,7 @@ const Contact: React.FC = () => {
       if (error.type === 'validation' && error.errors) {
         setErrors(error.errors);
       } else {
-        setSubmitMessage(error.message || 'Something went wrong. Please try again.');
+        setSubmitMessage(error.message || 'Something went wrong. Please try again.' );
       }
     } finally {
       setIsSubmitting(false);
@@ -234,8 +234,8 @@ const Contact: React.FC = () => {
   }, []);
 
   return (
-    <section id="contact" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-navy-800 relative overflow-hidden">
-      <div className="absolute inset-0 bg-navy-800"></div>
+    <section id="contact" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-charcoal relative overflow-hidden">
+      <div className="absolute inset-0 bg-charcoal"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -246,7 +246,7 @@ const Contact: React.FC = () => {
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
             Let's Build Something{' '}
-            <span className="text-purple">
+            <span className="text-violet-blue">
               Amazing Together
             </span>
           </h2>
@@ -278,16 +278,16 @@ const Contact: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  className="cursor-pointer flex items-center space-x-4 p-4 bg-navy-700/30 rounded-lg border border-white/10 hover:border-purple/50 transition-all duration-300"
+                  className="cursor-pointer flex items-center space-x-4 p-4 bg-white/3 rounded-lg border border-white/12 hover:border-violet-blue/50 transition-all duration-300"
                 >
-                  <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-purple/20 rounded-lg flex items-center justify-center">
-                    <info.icon className="w-5 h-5 sm:w-6 sm:h-6 text-purple" aria-hidden="true" />
+                  <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-violet-blue/20 rounded-lg flex items-center justify-center">
+                    <info.icon className="w-5 h-5 sm:w-6 sm:h-6 text-violet-blue" aria-hidden="true" />
                   </div>
                   <div>
                     <h4 className="text-white font-semibold mb-1 text-sm sm:text-base">{info.title}</h4>
                     <a
                       href={info.href}
-                      className="text-white/80 hover:text-purple transition-colors duration-200 text-sm sm:text-base"
+                      className="text-white/80 hover:text-violet-blue transition-colors duration-200 text-sm sm:text-base"
                       aria-label={`${info.title}: ${info.content}`}
                     >
                       {info.content}
@@ -303,7 +303,7 @@ const Contact: React.FC = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="bg-navy-700/50 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-white/10"
+            className="bg-white/3 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-white/12"
           >
             {isSubmitted ? (
               <motion.div
@@ -316,7 +316,7 @@ const Contact: React.FC = () => {
                 <p className="text-white/80 mb-6">{submitMessage || 'Thank you for reaching out. We\'ll get back to you soon.'}</p>
                 <button
                   onClick={resetForm}
-                  className="inline-flex items-center px-4 py-2 text-purple hover:text-white border border-purple hover:bg-purple rounded-lg transition-colors duration-200"
+                  className="inline-flex items-center px-4 py-2 text-violet-blue hover:text-white border border-violet-blue hover:bg-violet-blue rounded-lg transition-colors duration-200"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Send Another Message
@@ -335,9 +335,9 @@ const Contact: React.FC = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-navy-600/50 border ${
+                      className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${
                         errors.name ? 'border-red-500' : 'border-white/20'
-                      } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-purple transition-colors duration-200 text-sm sm:text-base`}
+                      } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue transition-colors duration-200 text-sm sm:text-base`}
                       placeholder="Your name"
                       aria-describedby={errors.name ? 'name-error' : undefined}
                       aria-invalid={errors.name ? 'true' : 'false'}
@@ -359,9 +359,9 @@ const Contact: React.FC = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-navy-600/50 border ${
+                      className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${
                         errors.email ? 'border-red-500' : 'border-white/20'
-                      } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-purple transition-colors duration-200 text-sm sm:text-base`}
+                      } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue transition-colors duration-200 text-sm sm:text-base`}
                       placeholder="your@email.com"
                       aria-describedby={errors.email ? 'email-error' : undefined}
                       aria-invalid={errors.email ? 'true' : 'false'}
@@ -384,9 +384,9 @@ const Contact: React.FC = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-navy-600/50 border ${
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${
                       errors.subject ? 'border-red-500' : 'border-white/20'
-                    } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-purple transition-colors duration-200 text-sm sm:text-base`}
+                    } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue transition-colors duration-200 text-sm sm:text-base`}
                     placeholder="Project inquiry"
                     aria-describedby={errors.subject ? 'subject-error' : undefined}
                     aria-invalid={errors.subject ? 'true' : 'false'}
@@ -408,9 +408,9 @@ const Contact: React.FC = () => {
                     value={formData.message}
                     onChange={handleChange}
                     rows={5}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-navy-600/50 border ${
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${
                       errors.message ? 'border-red-500' : 'border-white/20'
-                    } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-purple transition-colors duration-200 resize-none text-sm sm:text-base`}
+                    } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue transition-colors duration-200 resize-none text-sm sm:text-base`}
                     placeholder="Tell us about your project..."
                     aria-describedby={errors.message ? 'message-error' : undefined}
                     aria-invalid={errors.message ? 'true' : 'false'}
@@ -431,10 +431,7 @@ const Contact: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base"
-                  style={{
-                    background: 'linear-gradient(90deg, #4C1D95 0%, #312E81 100%)'
-                  }}
+                  className="w-full px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base bg-violet-blue hover:bg-violet-blue/90"
                   aria-label={isSubmitting ? 'Sending message...' : 'Send message'}
                 >
                   <span className="flex items-center justify-center">

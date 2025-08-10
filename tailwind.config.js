@@ -7,6 +7,19 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        // Adex-inspired color scheme
+        'violet-blue': 'hsla(234, 50%, 64%, 1)',
+        'dark-cornflower': 'hsla(214, 88%, 27%, 1)',
+        'cultured': 'hsla(220, 20%, 97%, 1)',
+        'lavender-web': 'hsla(233, 52%, 94%, 1)',
+        'cadet-blue': 'hsla(220, 12%, 70%, 1)',
+        'charcoal': 'hsla(218, 22%, 26%, 1)',
+        'raisin-black': 'hsla(216, 14%, 14%, 1)',
+        'light-gray': 'hsla(0, 0%, 79%, 1)',
+        'blue-crayola': 'hsla(219, 72%, 56%, 1)',
+        'black-coral': 'hsla(220, 12%, 43%, 1)',
+        
+        // Original colors (keeping for compatibility)
         black: {
           DEFAULT: "#000",
           100: "#000319",

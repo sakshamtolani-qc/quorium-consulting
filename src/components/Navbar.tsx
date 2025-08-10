@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      const sections = ['home','about', 'services', 'testimonials', 'contact'];
-      const scrollPosition = window.scrollY + 200;
+      // Only handle scroll-based navigation on home page
+      if (location.pathname === '/') {
+        const sections = ['home', 'about', 'why-choose-us', 'our-solutions', 'services', 'testimonials', 'contact'];
+        const scrollPosition = window.scrollY + 200;
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          if (scrollPosition >= offsetTop) {
-            setActiveSection(section);
-            break;
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = sections[i];
+          const element = document.getElementById(section);
+          if (element) {
+            const offsetTop = element.offsetTop;
+            if (scrollPosition >= offsetTop) {
+              setActiveSection(section);
+              break;
+            }
           }
         }
       }
@@ -29,7 +35,7 @@ const Navbar: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -40,9 +46,28 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const handleNavigation = (itemId: string) => {
+    if (itemId === 'services') {
+      navigate('/services');
+    } else if (location.pathname !== '/') {
+      // If we're not on home page, navigate to home first
+      navigate('/');
+      // Then scroll to section after a brief delay
+      setTimeout(() => {
+        scrollToSection(itemId);
+      }, 100);
+    } else {
+      // On home page, just scroll to section
+      scrollToSection(itemId);
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   const navItems = [
     { label: 'Home', id: 'home' },
     { label: 'About', id: 'about' },
+    { label: 'Why Choose Us', id: 'why-choose-us' },
+    { label: 'Our Solutions', id: 'our-solutions' },
     { label: 'Services', id: 'services' },
     { label: 'Testimonials', id: 'testimonials' },
     { label: 'Contact', id: 'contact' },
@@ -57,31 +82,30 @@ const Navbar: React.FC = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="hidden md:block fixed top-6 left-0 right-0 z-50"
       >
-        <div className="flex justify-center w-full">
+        <div className="flex justify-center w-full navbar-container">
           <div className="relative">
-            {/* Glow Effect */}
-            
             {/* Main Navbar */}
-            <div className="relative bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full px-8 py-4 shadow-2xl">
+            <div className="relative bg-charcoal/95 backdrop-blur-2xl border border-white/20 rounded-full px-6 lg:px-8 py-4 shadow-2xl">
               {/* Subtle inner glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-full"></div>
               
-              <div className="relative flex items-center space-x-8">
+              <div className="relative flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
                 {/* Logo */}
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-                  className="flex items-center space-x-2 pr-6 border-r border-white/20"
+                  className="flex items-center space-x-2 pr-3 sm:pr-4 lg:pr-6 border-r border-white/20 cursor-pointer"
+                  onClick={() => navigate('/')}
                 >
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center">
-                    <img src="/images/nexora.png" alt="nexora" />
+                    <img src="/images/qc-logo.png" alt="qc" />
                   </div>
-                  <span className="text-white font-bold text-lg tracking-wide">Nexora</span>
+                  <span className="text-white font-bold text-sm lg:text-base xl:text-lg tracking-wide">Quorium Consulting</span>
                 </motion.div>
 
                 {/* Navigation Items */}
-                <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4">
                   {navItems.map((item, index) => (
                     <motion.div
                       key={item.id}
@@ -91,37 +115,46 @@ const Navbar: React.FC = () => {
                       className="relative"
                     >
                       <button
-                        onClick={() => scrollToSection(item.id)}
-                        className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group ${
-                          activeSection === item.id
+                        onClick={() => handleNavigation(item.id)}
+                        className={`relative px-2.5 lg:px-3 py-2.5 text-xs sm:text-sm lg:text-base font-medium transition-all duration-300 rounded-lg group ${
+                          (location.pathname === '/services' && item.id === 'services') || 
+                          (location.pathname === '/' && activeSection === item.id)
                             ? 'text-white'
-                            : 'text-white/70 hover:text-white'
+                            : 'text-white/80 hover:text-white'
                         }`}
                       >
                         {/* Active background */}
-                        {activeSection === item.id && (
-                          <motion.div
-                            layoutId="activeBackground"
-                            className="absolute inset-0 rounded-lg"
-                            initial={false}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                          />
-                        )}
+                        {(location.pathname === '/services' && item.id === 'services') || 
+                          (location.pathname === '/' && activeSection === item.id)
+                            ? (
+                              <motion.div
+                                layoutId="activeBackground"
+                                className="absolute inset-0 bg-violet-blue/30 rounded-lg"
+                                initial={false}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                              />
+                            )
+                            : null
+                        }
                         
                         {/* Hover effect */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg bg-violet-blue/20"></div>
                         
                         <span className="relative z-10">{item.label}</span>
                         
                         {/* Active indicator */}
-                        {activeSection === item.id && (
-                          <motion.div
-                            layoutId="activeIndicator"
-                            className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-purple rounded-full"
-                            initial={false}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                          />
-                        )}
+                        {(location.pathname === '/services' && item.id === 'services') || 
+                          (location.pathname === '/' && activeSection === item.id)
+                            ? (
+                              <motion.div
+                                layoutId="activeIndicator"
+                                className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-violet-blue rounded-full"
+                                initial={false}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                              />
+                            )
+                            : null
+                        }
                       </button>
                     </motion.div>
                   ))}
@@ -136,18 +169,19 @@ const Navbar: React.FC = () => {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="md:hidden fixed top-0 left-0 right-0 z-50 bg-navy-900 backdrop-blur-2xl border-b border-white/10"
+        className="md:hidden fixed top-0 left-0 right-0 z-50 bg-charcoal/95 backdrop-blur-2xl border-b border-white/20"
       >
         <div className="flex items-center justify-between h-16 px-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-2 cursor-pointer"
+            onClick={() => navigate('/')}
           >
             <div className="w-6 h-6 rounded-md flex items-center justify-center">
-              <img src="/images/nexora.png" alt="nexora" />
+              <img src="/images/qc-logo.png" alt="qc" />
             </div>
-            <span className="text-white font-bold text-lg">Nexora</span>
+            <span className="text-white font-bold text-sm sm:text-base lg:text-lg">Quorium Consulting</span>
           </motion.div>
 
           <button
@@ -163,17 +197,18 @@ const Navbar: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-white/10 bg-navy-900 backdrop-blur-2xl"
+            className="border-t border-white/20 bg-charcoal/95 backdrop-blur-2xl"
           >
             <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-left transition-all duration-200 py-3 px-4 rounded-lg ${
-                    activeSection === item.id
-                      ? 'text-white bg-white/10 border border-white/20'
-                      : 'text-white/70 hover:text-white '
+                  onClick={() => handleNavigation(item.id)}
+                  className={`block w-full text-left text-sm sm:text-base font-medium transition-all duration-200 py-3 px-4 rounded-lg ${
+                    (location.pathname === '/services' && item.id === 'services') || 
+                    (location.pathname === '/' && activeSection === item.id)
+                      ? 'text-white bg-violet-blue/30 border border-violet-blue/50'
+                      : 'text-white/80 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   {item.label}

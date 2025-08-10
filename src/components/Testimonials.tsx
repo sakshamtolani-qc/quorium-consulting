@@ -58,7 +58,7 @@ const Testimonials: React.FC = () => {
       <Star
         key={index}
         className={`w-4 h-4 ${
-          index < rating ? 'text-yellow-400 fill-current' : 'text-gray-400'
+          index < rating ? 'text-yellow-400 fill-current' : 'text-light-gray'
         }`}
         aria-hidden="true"
       />
@@ -66,10 +66,10 @@ const Testimonials: React.FC = () => {
   };
 
   return (
-    <section id="testimonials" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-navy-800 relative overflow-hidden">
+    <section id="testimonials" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-charcoal relative overflow-hidden">
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-96 sm:h-96 bg-purple/5 rounded-full blur-3xl will-change-transform"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 sm:w-64 sm:h-64 bg-purple/3 rounded-full blur-3xl will-change-transform"></div>
+        <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-96 sm:h-96 bg-violet-blue/10 rounded-full blur-3xl will-change-transform"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 sm:w-64 sm:h-64 bg-blue-crayola/8 rounded-full blur-3xl will-change-transform"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -81,7 +81,7 @@ const Testimonials: React.FC = () => {
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
             What Our{' '}
-            <span className="text-purple">
+            <span className="text-violet-blue">
               Clients Say
             </span>
           </h2>
@@ -97,14 +97,14 @@ const Testimonials: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="cursor-pointer group relative bg-navy-700/50 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-white/10 hover:border-purple/50 transition-all duration-300 hover:transform hover:scale-105"
+              className="cursor-pointer group relative bg-white backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-lavender-web hover:border-violet-blue/50 transition-all duration-300 hover:transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              <div className="absolute inset-0 bg-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+              <div className="absolute inset-0 bg-violet-blue/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
               
               <div className="relative z-10">
                 {/* Quote Icon */}
-                <div className="absolute -top-2 -left-2 w-8 h-8 bg-purple/20 rounded-full flex items-center justify-center">
-                  <Quote className="w-4 h-4 text-purple" aria-hidden="true" />
+                <div className="absolute -top-2 -left-2 w-8 h-8 bg-violet-blue/20 rounded-full flex items-center justify-center">
+                  <Quote className="w-4 h-4 text-violet-blue" aria-hidden="true" />
                 </div>
 
                 {/* Rating - Aligned to Right */}
@@ -113,7 +113,7 @@ const Testimonials: React.FC = () => {
                 </div>
 
                 {/* Review Text */}
-                <blockquote className="text-white/80 mb-6 leading-relaxed text-sm sm:text-base italic">
+                <blockquote className="text-black-coral mb-6 leading-relaxed text-sm sm:text-base italic">
                   "{testimonial.review}"
                 </blockquote>
 
@@ -123,19 +123,19 @@ const Testimonials: React.FC = () => {
                     <img
                       src={testimonial.avatar}
                       alt={`${testimonial.name}, ${testimonial.role}`}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-white/20 group-hover:border-purple/50 transition-colors duration-300"
+                      className="w-12 h-12 rounded-full object-cover border-2 border-lavender-web group-hover:border-violet-blue/50 transition-colors duration-300"
                       loading="lazy"
                       decoding="async"
                       width="48"
                       height="48"
                     />
-                    <div className="absolute inset-0 rounded-full bg-purple/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 rounded-full bg-violet-blue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
                   <div className="ml-4">
-                    <h4 className="text-white font-semibold text-sm sm:text-base">
+                    <h4 className="text-charcoal font-semibold text-sm sm:text-base">
                       {testimonial.name}
                     </h4>
-                    <p className="text-white/60 text-xs sm:text-sm">
+                    <p className="text-cadet-blue text-xs sm:text-sm">
                       {testimonial.role}
                     </p>
                   </div>
@@ -162,10 +162,7 @@ const Testimonials: React.FC = () => {
                 element.scrollIntoView({ behavior: 'smooth' });
               }
             }}
-            className="px-8 py-4 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105"
-            style={{
-              background: 'linear-gradient(90deg, #4C1D95 0%, #312E81 100%)'
-            }}
+            className="px-8 py-4 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 bg-violet-blue hover:bg-violet-blue/90 hover:shadow-lg transform hover:-translate-y-1"
             aria-label="Start your project today - Contact us"
           >
             Start Your Project Today
