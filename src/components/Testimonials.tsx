@@ -66,7 +66,7 @@ const Testimonials: React.FC = () => {
   };
 
   return (
-    <section id="testimonials" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-charcoal relative overflow-hidden">
+    <section id="testimonials" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-[#221a42] to-[#2f2559] relative overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-96 sm:h-96 bg-violet-blue/10 rounded-full blur-3xl will-change-transform"></div>
         <div className="absolute bottom-1/4 right-1/4 w-32 h-32 sm:w-64 sm:h-64 bg-blue-crayola/8 rounded-full blur-3xl will-change-transform"></div>

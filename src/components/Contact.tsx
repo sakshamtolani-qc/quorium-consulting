@@ -234,8 +234,8 @@ const Contact: React.FC = () => {
   }, []);
 
   return (
-    <section id="contact" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-charcoal relative overflow-hidden">
-      <div className="absolute inset-0 bg-charcoal"></div>
+    <section id="contact" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-[#221a42] to-[#2f2559] relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-[#221a42] to-[#2f2559]"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div

@@ -74,7 +74,7 @@ const PageTransitionLoader: React.FC = () => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-50 bg-charcoal flex flex-col items-center justify-center"
+          className="fixed inset-0 z-50 bg-[#2f2559] flex flex-col items-center justify-center"
         >
           {/* Logo Container */}
           <motion.div
@@ -91,7 +91,7 @@ const PageTransitionLoader: React.FC = () => {
               />
               
               {/* Glowing effect around logo */}
-              <div className="absolute inset-0 bg-violet-blue/20 rounded-full blur-xl animate-pulse"></div>
+              <div className="absolute inset-0 bg-[#5a4a9b]/20 rounded-full blur-xl animate-pulse"></div>
             </div>
           </motion.div>
 
@@ -118,7 +118,7 @@ const PageTransitionLoader: React.FC = () => {
             className="w-64 sm:w-80 h-2 bg-white/20 rounded-full overflow-hidden"
           >
             <motion.div
-              className="h-full bg-gradient-to-r from-violet-blue to-blue-crayola rounded-full"
+              className="h-full bg-gradient-to-r from-[#5a4a9b] to-[#7864c4] rounded-full"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: progress / 100 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
@@ -141,7 +141,7 @@ const PageTransitionLoader: React.FC = () => {
             initial={{ opacity: 0, rotate: 0 }}
             animate={{ opacity: 1, rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear", delay: 0.8 }}
-            className="mt-6 w-8 h-8 border-2 border-white/30 border-t-violet-blue rounded-full"
+            className="mt-6 w-8 h-8 border-2 border-white/30 border-t-[#7864c4] rounded-full"
           />
         </motion.div>
       )}

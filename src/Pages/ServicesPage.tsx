@@ -1,27 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Globe, 
-  Users, 
-  Megaphone, 
-  Database, 
-  Bot, 
-  Smartphone, 
-  BarChart3, 
-  Zap, 
-  Cloud, 
-  Shield, 
+import {
+  Globe,
+  Users,
+  Megaphone,
+  Database,
+  Bot,
+  Smartphone,
+  BarChart3,
+  Zap,
+  Cloud,
+  Shield,
   Palette,
-  ArrowLeft
 } from 'lucide-react';
 
 const ServicesPage: React.FC = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const allServices = [
     {
@@ -152,32 +155,9 @@ const ServicesPage: React.FC = () => {
     navigate('/#contact');
   };
 
-  const handleBackToHome = () => {
-    navigate('/');
-  };
 
   return (
     <div className="min-h-screen bg-cultured pt-32">
-      {/* Page Title Section */}
-      {/* <div className="bg-white border-b border-lavender-web">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <button 
-                onClick={handleBackToHome}
-                className="flex items-center space-x-2 text-charcoal hover:text-violet-blue transition-colors duration-300"
-              >
-                <ArrowLeft className="w-5 h-5" />
-                <span className="font-semibold">Back to Home</span>
-              </button>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-charcoal">
-              All Services
-            </h1>
-          </div>
-        </div>
-      </div> */}
-
       {/* Services Section */}
       <section ref={ref} className="py-12 sm:py-16 lg:py-20 relative overflow-hidden">
         <div className="absolute inset-0">

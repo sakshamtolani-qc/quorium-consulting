@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-center w-full navbar-container">
           <div className="relative">
             {/* Main Navbar */}
-            <div className="relative bg-charcoal/95 backdrop-blur-2xl border border-white/20 rounded-full px-6 lg:px-8 py-4 shadow-2xl">
+            <div className="relative bg-gradient-to-r from-[#2f2559] to-[#221a42] backdrop-blur-2xl border border-white/20 rounded-full px-6 lg:px-8 py-4 shadow-2xl">
               {/* Subtle inner glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-full"></div>
               
@@ -169,7 +169,7 @@ const Navbar: React.FC = () => {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="md:hidden fixed top-0 left-0 right-0 z-50 bg-charcoal/95 backdrop-blur-2xl border-b border-white/20"
+        className="md:hidden fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#2f2559] to-[#221a42] backdrop-blur-2xl border-b border-white/20"
       >
         <div className="flex items-center justify-between h-16 px-4">
           <motion.div
@@ -197,7 +197,7 @@ const Navbar: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-white/20 bg-charcoal/95 backdrop-blur-2xl"
+            className="border-t border-white/20 bg-gradient-to-r from-[#2f2559] to-[#221a42] backdrop-blur-2xl"
           >
             <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => (

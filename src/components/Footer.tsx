@@ -26,8 +26,8 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer id="footer" className="bg-[#2a2e3a] border-t border-white/12 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[#2a2e3a]"></div>
+    <footer id="footer" className="bg-gradient-to-r from-[#221a42] to-[#2f2559] border-t border-white/12 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-[#221a42] to-[#2f2559]"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="py-8 sm:py-12">
