@@ -37,94 +37,67 @@ const Contact: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
-  // Memoized contact info to prevent unnecessary re-renders
   const contactInfo: ContactInfo[] = useMemo(() => [
     {
       icon: Mail,
       title: 'Email',
-      content: 'quoriumconsulting@gmail.com',
-      href: 'mailto:quoriumconsulting@gmail.com'
+      content: 'hr@quoriumconsulting.com',
+      href: 'mailto:hr@quoriumconsulting.com'
     },
     {
       icon: Phone,
       title: 'Phone',
-      content: '+91 9999999999',
-      href: 'tel:+919999999999'
+      content: '+91 8076192363',
+      href: 'tel:+918076192363'
     },
     {
       icon: MapPin,
       title: 'Location',
-      content: 'India',
+      content: 'Delhi, India',
       href: '#'
     }
   ], []);
 
-  // Optimized input sanitization
   const sanitizeInput = useCallback((input: string): string => {
-  return input.replace(/[<>]/g, ''); // Don't trim here
-}, []);
+    return input.replace(/[<>]/g, '');
+  }, []);
 
-  // Enhanced validation with better error messages
   const validateForm = useCallback((data: FormData): FormErrors => {
     const newErrors: FormErrors = {};
-
-    // Name validation
     const name = data.name.trim();
-    if (!name) {
-      newErrors.name = 'Name is required';
-    } else if (name.length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
-    } else if (name.length > 50) {
-      newErrors.name = 'Name must be less than 50 characters';
-    }
+    if (!name) newErrors.name = 'Name is required';
+    else if (name.length < 2) newErrors.name = 'Name must be at least 2 characters';
+    else if (name.length > 50) newErrors.name = 'Name must be less than 50 characters';
 
-    // Email validation
     const email = data.email.trim();
-    if (!email) {
-      newErrors.email = 'Email is required';
-    } else {
+    if (!email) newErrors.email = 'Email is required';
+    else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        newErrors.email = 'Please enter a valid email address';
-      } else if (email.length > 100) {
-        newErrors.email = 'Email must be less than 100 characters';
-      }
+      if (!emailRegex.test(email)) newErrors.email = 'Please enter a valid email address';
+      else if (email.length > 100) newErrors.email = 'Email must be less than 100 characters';
     }
 
-    // Subject validation
     const subject = data.subject.trim();
-    if (!subject) {
-      newErrors.subject = 'Subject is required';
-    } else if (subject.length < 3) {
-      newErrors.subject = 'Subject must be at least 3 characters';
-    } else if (subject.length > 100) {
-      newErrors.subject = 'Subject must be less than 100 characters';
-    }
+    if (!subject) newErrors.subject = 'Subject is required';
+    else if (subject.length < 3) newErrors.subject = 'Subject must be at least 3 characters';
+    else if (subject.length > 100) newErrors.subject = 'Subject must be less than 100 characters';
 
-    // Message validation
     const message = data.message.trim();
-    if (!message) {
-      newErrors.message = 'Message is required';
-    } else if (message.length < 10) {
-      newErrors.message = 'Message must be at least 10 characters';
-    } else if (message.length > 1000) {
-      newErrors.message = 'Message must be less than 1000 characters';
-    }
+    if (!message) newErrors.message = 'Message is required';
+    else if (message.length < 10) newErrors.message = 'Message must be at least 10 characters';
+    else if (message.length > 1000) newErrors.message = 'Message must be less than 1000 characters';
 
     return newErrors;
   }, []);
 
-  // Optimized input change handler
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     const sanitizedValue = sanitizeInput(value);
-    
     setFormData(prev => ({
       ...prev,
       [name]: sanitizedValue
     }));
 
-    // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -133,70 +106,18 @@ const Contact: React.FC = () => {
     }
   }, [errors, sanitizeInput]);
 
-  const submitToAPI = useCallback(async (data: FormData) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+  // Encode form data for Netlify submission
+  const encode = (data: { [key: string]: string }) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  };
 
-    try {
-      const response = await fetch('http://localhost:3000/api/contact/post/message', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-        signal: controller.signal
-      });
-
-      clearTimeout(timeoutId);
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        if (response.status === 422 && responseData.errors) {
-          // Handle validation errors from server
-          const serverErrors: FormErrors = {};
-          responseData.errors.forEach((err: { param: string; msg: string }) => {
-            serverErrors[err.param] = err.msg;
-          });
-          throw { type: 'validation', errors: serverErrors };
-        } else if (response.status >= 500) {
-          throw { type: 'server', message: 'Server error. Please try again later.' };
-        } else {
-          throw { type: 'client', message: responseData.message || 'Something went wrong. Please try again.' };
-        }
-      }
-
-      return {
-        success: true,
-        message: responseData.message || 'Message sent successfully! We\'ll get back to you within 24 hours.'
-      };
-    } catch (error: any) {
-      clearTimeout(timeoutId);      
-      if (error.name === 'AbortError') {
-        throw { type: 'timeout', message: 'Request timed out. Please check your connection and try again.' };
-      }
-      
-      if (error.type) {
-        throw error;
-      }
-      
-      // Network or other errors
-      throw { 
-        type: 'network', 
-        message: 'Network error. Please check your connection and try again.' 
-      };
-    }
-  }, []);
-
-  // Optimized form submission handler
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate form
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      // Focus on first error field
       const firstErrorField = Object.keys(validationErrors)[0];
       const element = document.getElementById(firstErrorField);
       element?.focus();
@@ -208,24 +129,23 @@ const Contact: React.FC = () => {
     setSubmitMessage('');
 
     try {
-      const result = await submitToAPI(formData);
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ "form-name": "contact", ...formData })
+      });
+
       setIsSubmitted(true);
-      setSubmitMessage(result.message);
+      setSubmitMessage("Message sent successfully! We'll get back to you within 24 hours.");
       setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Form submission error:', error);
-      
-      if (error.type === 'validation' && error.errors) {
-        setErrors(error.errors);
-      } else {
-        setSubmitMessage(error.message || 'Something went wrong. Please try again.' );
-      }
+      setSubmitMessage("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, validateForm, submitToAPI]);
+  }, [formData, validateForm]);
 
-  // Reset form handler
   const resetForm = useCallback(() => {
     setFormData({ name: '', email: '', subject: '', message: '' });
     setErrors({});
@@ -245,10 +165,7 @@ const Contact: React.FC = () => {
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
-            Let's Build Something{' '}
-            <span className="text-violet-blue">
-              Amazing Together
-            </span>
+            Let's Build Something <span className="text-violet-blue">Amazing Together</span>
           </h2>
           <p className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto px-4">
             Ready to transform your ideas into reality? Get in touch and let's discuss your next project
@@ -323,103 +240,79 @@ const Contact: React.FC = () => {
                 </button>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" noValidate>
+              <form
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
+                className="space-y-4 sm:space-y-6"
+              >
+                <input type="hidden" name="form-name" value="contact" />
+                <p className="hidden">
+                  <label>Don’t fill this out: <input name="bot-field" /></label>
+                </p>
+
+                {/* Name */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-white font-medium mb-2 text-sm sm:text-base">
-                      Name *
-                    </label>
+                    <label htmlFor="name" className="block text-white font-medium mb-2 text-sm sm:text-base">Name *</label>
                     <input
                       type="text"
                       id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${
-                        errors.name ? 'border-red-500' : 'border-white/20'
-                      } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue transition-colors duration-200 text-sm sm:text-base`}
+                      className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${errors.name ? 'border-red-500' : 'border-white/20'} rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue`}
                       placeholder="Your name"
-                      aria-describedby={errors.name ? 'name-error' : undefined}
-                      aria-invalid={errors.name ? 'true' : 'false'}
                     />
-                    {errors.name && (
-                      <p id="name-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">
-                        {errors.name}
-                      </p>
-                    )}
+                    {errors.name && <p className="text-red-400 text-xs sm:text-sm mt-1">{errors.name}</p>}
                   </div>
 
+                  {/* Email */}
                   <div>
-                    <label htmlFor="email" className="block text-white font-medium mb-2 text-sm sm:text-base">
-                      Email *
-                    </label>
+                    <label htmlFor="email" className="block text-white font-medium mb-2 text-sm sm:text-base">Email *</label>
                     <input
                       type="email"
                       id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${
-                        errors.email ? 'border-red-500' : 'border-white/20'
-                      } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue transition-colors duration-200 text-sm sm:text-base`}
+                      className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${errors.email ? 'border-red-500' : 'border-white/20'} rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue`}
                       placeholder="your@email.com"
-                      aria-describedby={errors.email ? 'email-error' : undefined}
-                      aria-invalid={errors.email ? 'true' : 'false'}
                     />
-                    {errors.email && (
-                      <p id="email-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">
-                        {errors.email}
-                      </p>
-                    )}
+                    {errors.email && <p className="text-red-400 text-xs sm:text-sm mt-1">{errors.email}</p>}
                   </div>
                 </div>
 
+                {/* Subject */}
                 <div>
-                  <label htmlFor="subject" className="block text-white font-medium mb-2 text-sm sm:text-base">
-                    Subject *
-                  </label>
+                  <label htmlFor="subject" className="block text-white font-medium mb-2 text-sm sm:text-base">Subject *</label>
                   <input
                     type="text"
                     id="subject"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${
-                      errors.subject ? 'border-red-500' : 'border-white/20'
-                    } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue transition-colors duration-200 text-sm sm:text-base`}
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${errors.subject ? 'border-red-500' : 'border-white/20'} rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue`}
                     placeholder="Project inquiry"
-                    aria-describedby={errors.subject ? 'subject-error' : undefined}
-                    aria-invalid={errors.subject ? 'true' : 'false'}
                   />
-                  {errors.subject && (
-                    <p id="subject-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">
-                      {errors.subject}
-                    </p>
-                  )}
+                  {errors.subject && <p className="text-red-400 text-xs sm:text-sm mt-1">{errors.subject}</p>}
                 </div>
 
+                {/* Message */}
                 <div>
-                  <label htmlFor="message" className="block text-white font-medium mb-2 text-sm sm:text-base">
-                    Message *
-                  </label>
+                  <label htmlFor="message" className="block text-white font-medium mb-2 text-sm sm:text-base">Message *</label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     rows={5}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${
-                      errors.message ? 'border-red-500' : 'border-white/20'
-                    } rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue transition-colors duration-200 resize-none text-sm sm:text-base`}
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border ${errors.message ? 'border-red-500' : 'border-white/20'} rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-violet-blue resize-none`}
                     placeholder="Tell us about your project..."
-                    aria-describedby={errors.message ? 'message-error' : undefined}
-                    aria-invalid={errors.message ? 'true' : 'false'}
                   />
-                  {errors.message && (
-                    <p id="message-error" className="text-red-400 text-xs sm:text-sm mt-1" role="alert">
-                      {errors.message}
-                    </p>
-                  )}
+                  {errors.message && <p className="text-red-400 text-xs sm:text-sm mt-1">{errors.message}</p>}
                 </div>
 
                 {submitMessage && !isSubmitted && (
@@ -431,19 +324,18 @@ const Contact: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base bg-violet-blue hover:bg-violet-blue/90"
-                  aria-label={isSubmitting ? 'Sending message...' : 'Send message'}
+                  className="w-full px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 disabled:opacity-50 bg-violet-blue hover:bg-violet-blue/90"
                 >
                   <span className="flex items-center justify-center">
                     {isSubmitting ? (
                       <>
-                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" aria-hidden="true"></div>
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
                         Sending...
                       </>
                     ) : (
                       <>
                         Send Message
-                        <Send className="ml-2 w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
+                        <Send className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                       </>
                     )}
                   </span>

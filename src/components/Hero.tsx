@@ -24,19 +24,20 @@ const Hero: React.FC = () => {
     {
       id: 1,
       image: './images/webp/hero-slide-1.webp',
-      title: 'Digital Solutions'
+      title: 'Transforming Ideas into Digital Reality'
     },
     {
       id: 2,
-      image: './images/webp/hero-slide-5 (1).webp',
-      title: 'Watch Our Story'
+      image: './images/webp/hero-slide-5.webp',
+      title: 'Discover Our Journey'
     },
     {
       id: 3,
       image: './images/webp/hero-slide-4.webp',
-      title: 'Innovation Hub'
+      title: 'Where Innovation Comes Alive'
     }
   ];
+
 
   return (
     <section

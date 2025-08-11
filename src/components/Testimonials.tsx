@@ -10,46 +10,39 @@ const Testimonials: React.FC = () => {
 
   const testimonials = [
     {
-      name: 'Sarah Johnson',
-      role: 'CEO, TechStart Inc.',
-      avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150&h=150',
+      name: 'Lalit Gupta',
+      role: 'Director - Arya Homes and Builder',
+      avatar: './images/webp/testimonials/lalit.webp',
       rating: 5,
-      review: 'Nexora transformed our vision into a stunning reality. Their attention to detail and technical expertise exceeded our expectations. The team delivered a scalable solution that has significantly boosted our business growth.'
+      review: 'They delivered a smart and efficient solution for our real estate needs. Great work and timely support.'
     },
     {
-      name: 'Michael Chen',
-      role: 'Product Manager, InnovateLab',
-      avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150',
+      name: 'Harikesh Kumar',
+      role: 'Founder at BSDAGCT',
+      avatar: './images/webp/testimonials/harikesh.webp',
       rating: 5,
-      review: 'Working with Nexora was an absolute pleasure. They understood our complex requirements and delivered a solution that not only met but exceeded our goals. Their communication throughout the project was exceptional.'
+      review: 'Quorium Consulting - 1st my choice for CMS services method'
     },
     {
-      name: 'Emily Rodriguez',
-      role: 'Founder, CreativeSpace',
-      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150',
+      name: 'Prof. Arvind Mishra',
+      role: 'Principal at M.D.P.G. College',
+      avatar: './images/webp/testimonials/prof.webp',
       rating: 5,
-      review: 'The level of professionalism and creativity that Nexora brings to every project is remarkable. They helped us build a platform that our users absolutely love. Highly recommended for any serious development work.'
+      review: 'An excellent college management system by Quorium Consulting —simple, efficient, and reliable. Great support team too!'
     },
     {
-      name: 'David Thompson',
-      role: 'CTO, DataFlow Systems',
-      avatar: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=150&h=150',
+      name: 'Pratibha Jaiswal',
+      role: 'Founder at Akanya',
+      avatar: './images/webp/testimonials/akanya.webp',
       rating: 5,
-      review: 'Nexora delivered a robust, scalable solution that has been running flawlessly for over a year. Their code quality is exceptional, and their post-launch support has been outstanding. True professionals.'
-    },
-    {
-      name: 'Lisa Wang',
-      role: 'Marketing Director, BrandBoost',
-      avatar: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=150&h=150',
-      rating: 5,
-      review: 'From concept to deployment, Nexora made the entire process seamless. Their innovative approach and technical skills helped us launch ahead of schedule. The results speak for themselves - our engagement rates have tripled.'
+      review: 'Their team delivered a smooth, reliable, and user-friendly solution tailored to our e-commerce needs.'
     },
     {
       name: 'James Wilson',
       role: 'Startup Founder, NextGen Solutions',
       avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150&h=150',
       rating: 5,
-      review: 'Nexora turned our ambitious idea into a market-ready product. Their expertise in modern technologies and user experience design helped us secure our first round of funding. Exceptional work!'
+      review: 'They turned our ambitious idea into a market-ready product. Their expertise in modern technologies and user experience design helped us secure our first round of funding. Exceptional work!'
     }
   ];
 
