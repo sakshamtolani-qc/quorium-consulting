@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle, RefreshCw } from 'lucide-react';
-import { Helmet } from 'react-helmet-async'; // ✅ react-helmet se badal kar async version use kiya gaya hai
+import { Helmet } from 'react-helmet-async'; 
 
 interface FormData {
   name: string;
@@ -64,12 +64,12 @@ const Contact: React.FC = () => {
     "@type": "ContactPage",
     "name": "Contact Quorium Consulting for IT & AI Solutions",
     "description": "Ready to transform your ideas into reality? Get in touch with Quorium Consulting to discuss your next project in web development, AI, or digital strategy.",
-    "url": "https://www.quoriumconsulting.com/contact", // ✅ Yahan apni website ka real URL daalein
+    "url": "https://www.quoriumconsulting.com/contact", 
     "mainEntity": {
       "@type": "Organization",
       "name": "Quorium Consulting",
-      "url": "https://www.quoriumconsulting.com", // ✅ Yahan apni website ka homepage URL daalein
-      "logo": "https://www.quoriumconsulting.com/logo.png", // ✅ Yahan apni website ka logo URL daalein
+      "url": "https://www.quoriumconsulting.com", 
+      "logo": "https://www.quoriumconsulting.com/logo.png", 
       "email": "hr@quoriumconsulting.com",
       "telephone": "+918076192363",
       "address": {
