@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 
 const Loader: React.FC = () => {
@@ -68,3 +68,4 @@ const Loader: React.FC = () => {
 };
 
 export default Loader;
+

@@ -150,3 +150,4 @@ const PageTransitionLoader: React.FC = () => {
 };
 
 export default PageTransitionLoader;
+
