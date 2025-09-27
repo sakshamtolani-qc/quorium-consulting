@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async'; 
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -13,18 +14,14 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-
-      // Only handle scroll-based navigation on home page
       if (location.pathname === '/') {
         const sections = ['home', 'about', 'why-choose-us', 'our-solutions', 'services', 'testimonials', 'contact'];
         const scrollPosition = window.scrollY + 200;
-
         for (let i = sections.length - 1; i >= 0; i--) {
           const section = sections[i];
           const element = document.getElementById(section);
           if (element) {
-            const offsetTop = element.offsetTop;
-            if (scrollPosition >= offsetTop) {
+            if (scrollPosition >= element.offsetTop) {
               setActiveSection(section);
               break;
             }
@@ -32,7 +29,6 @@ const Navbar: React.FC = () => {
         }
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname]);
@@ -50,14 +46,9 @@ const Navbar: React.FC = () => {
     if (itemId === 'services') {
       navigate('/services');
     } else if (location.pathname !== '/') {
-      // If we're not on home page, navigate to home first
       navigate('/');
-      // Then scroll to section after a brief delay
-      setTimeout(() => {
-        scrollToSection(itemId);
-      }, 100);
+      setTimeout(() => scrollToSection(itemId), 100);
     } else {
-      // On home page, just scroll to section
       scrollToSection(itemId);
     }
     setIsMobileMenuOpen(false);
@@ -73,8 +64,29 @@ const Navbar: React.FC = () => {
     { label: 'Contact', id: 'contact' },
   ];
 
+  // SEO ke liye Navigation ka Structured Data
+  const navigationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "name": "Main Navigation",
+    "url": "https://www.quoriumconsulting.com/", 
+    "potentialAction": navItems.map(item => ({
+      "@type": "Action",
+      "name": item.label,
+      "target": item.id === 'services'
+        ? `https://www.quoriumconsulting.com/services`
+        : `https://www.quoriumconsulting.com/#${item.id}`
+    }))
+  };
+
   return (
     <>
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(navigationSchema)}
+        </script>
+      </Helmet>
+
       {/* Desktop Luxury Navbar */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
@@ -84,13 +96,9 @@ const Navbar: React.FC = () => {
       >
         <div className="flex justify-center w-full navbar-container">
           <div className="relative">
-            {/* Main Navbar */}
             <div className="relative bg-gradient-to-r from-[#2f2559] to-[#221a42] backdrop-blur-2xl border border-white/20 rounded-full px-6 lg:px-8 py-4 shadow-2xl">
-              {/* Subtle inner glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-full"></div>
-              
               <div className="relative flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
-                {/* Logo */}
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -99,12 +107,10 @@ const Navbar: React.FC = () => {
                   onClick={() => navigate('/')}
                 >
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center">
-                    <img src="/images/qc-logo.png" alt="qc" />
+                    <img src="/images/qc-logo.png" alt="Quorium Consulting Logo" /> 
                   </div>
                   <span className="text-white font-bold text-sm lg:text-base xl:text-lg tracking-wide">Quorium Consulting</span>
                 </motion.div>
-
-                {/* Navigation Items */}
                 <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4">
                   {navItems.map((item, index) => (
                     <motion.div
@@ -123,7 +129,6 @@ const Navbar: React.FC = () => {
                             : 'text-white/80 hover:text-white'
                         }`}
                       >
-                        {/* Active background */}
                         {(location.pathname === '/services' && item.id === 'services') || 
                           (location.pathname === '/' && activeSection === item.id)
                             ? (
@@ -136,13 +141,8 @@ const Navbar: React.FC = () => {
                             )
                             : null
                         }
-                        
-                        {/* Hover effect */}
                         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg bg-violet-blue/20"></div>
-                        
                         <span className="relative z-10">{item.label}</span>
-                        
-                        {/* Active indicator */}
                         {(location.pathname === '/services' && item.id === 'services') || 
                           (location.pathname === '/' && activeSection === item.id)
                             ? (
@@ -179,7 +179,7 @@ const Navbar: React.FC = () => {
             onClick={() => navigate('/')}
           >
             <div className="w-6 h-6 rounded-md flex items-center justify-center">
-              <img src="/images/qc-logo.png" alt="qc" />
+              <img src="/images/qc-logo.png" alt="Quorium Consulting Logo Mobile" />
             </div>
             <span className="text-white font-bold text-sm sm:text-base lg:text-lg">Quorium Consulting</span>
           </motion.div>
@@ -187,6 +187,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"} 
           >
             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
