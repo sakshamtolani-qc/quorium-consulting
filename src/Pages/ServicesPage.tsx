@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async'; // ✅ Console errors se bachne ke liye updated library
+import { Helmet } from 'react-helmet-async';
 import {
   Globe, Users, Megaphone, Database, Bot,
   Smartphone, BarChart3, Zap, Cloud, Shield, Palette
@@ -189,13 +189,13 @@ const ServicesPage: React.FC = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.quoriumconsulting.com/services" />
         <meta property="og:site_name" content="Quorium Consulting" />
-        <meta property="og:image" content="https://www.quoriumconsulting.com/assets/services-banner.jpg" /> 
+        <meta property="og:image" content="https://www.quoriumconsulting.com/images/webp/services-banner.jpg" /> 
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Our Services | Quorium Consulting" />
         <meta name="twitter:description" content="Explore our services: Web, Mobile, AI, ERP, Marketing, Cloud, and more." />
-        <meta name="twitter:image" content="https://www.quoriumconsulting.com/assets/services-banner.jpg" />
+        <meta name="twitter:image" content="https://www.quoriumconsulting.com/images/webp/services-banner.jpg" />
 
         {/* Structured Data (Schema.org JSON-LD) */}
         <script type="application/ld+json">

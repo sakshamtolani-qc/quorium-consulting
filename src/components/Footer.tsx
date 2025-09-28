@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
     "@type": "Organization",
     "name": "Quorium Consulting",
     "url": "https://www.quoriumconsulting.com", 
-    "logo": "https://www.quoriumconsulting.com/assets/qc-logo.png", 
+    "logo": "https://www.quoriumconsulting.com/images/webp/qc.webp", 
     "sameAs": [
       "https://www.instagram.com/quorium_consulting/?hl=en",
       "https://linkedin.com/company/quorium-consulting-qc",

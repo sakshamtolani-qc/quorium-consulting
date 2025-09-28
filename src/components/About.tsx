@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Helmet } from 'react-helmet-async'; 
+import { Helmet } from 'react-helmet-async';
 
 const About: React.FC = () => {
   const ref = useRef(null);
@@ -20,27 +20,25 @@ const About: React.FC = () => {
     "@type": "AboutPage",
     "name": "About Quorium Consulting",
     "description": "Learn about Quorium Consulting, a next-generation IT & AI solutions provider founded in 2023. We specialize in web development, AI systems, and digital strategy.",
-    "url": "https://quoriumconsulting.com/about", 
+    "url": "https://quoriumconsulting.com/#about",
     "mainEntity": {
       "@type": "Organization",
       "name": "Quorium Consulting",
-      "url": "https://quoriumconsulting.com", 
-      "logo": "https://quoriumconsulting.com/assets/qc-logo.png", 
+      "url": "https://quoriumconsulting.com",
+      "logo": "images/webp/qc.webp",
       "foundingDate": "2023",
       "founder": {
         "@type": "Person",
-        "name": "Saksham Tolani" 
+        "name": "Saksham Tolani"
       },
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "XXXX",
-        "addressLocality": "XXXX",
-        "postalCode": "12345",
-        "addressCountry": "INDIA" 
+        "addressLocality": "Delhi",
+        "addressCountry": "IN"
       },
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+91 xxxxxxxx", //  Replace with your phone number
+        "telephone": "+918076192363",
         "contactType": "customer service"
       }
     }
@@ -59,22 +57,22 @@ const About: React.FC = () => {
           name="keywords"
           content="About Quorium, IT Consultancy, AI Solutions, Digital Growth, Web Development, Mobile Development, Company History"
         />
-        <link rel="canonical" href="https://quoriumconsulting.com/about" /> 
+        <link rel="canonical" href="https://quoriumconsulting.com/#about" />
 
         {/* Open Graph (for Facebook, LinkedIn, etc.) */}
         <meta property="og:title" content="About Us | Quorium Consulting" />
         <meta property="og:description" content="Learn about our mission to drive digital growth through innovative IT and AI solutions." />
-        <meta property="og:url" content="https://quoriumconsulting/about" /> 
+        <meta property="og:url" content="https://quoriumconsulting/about" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://quoriumconsulting.com/assets/about-us-banner.jpg" /> 
+        <meta property="og:image" content="https://quoriumconsulting.com/images/webp/about-us-banner.webp" />
         <meta property="og:site_name" content="Quorium Consulting" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="About Us | Quorium Consulting" />
         <meta name="twitter:description" content="Learn about our mission to drive digital growth through innovative IT and AI solutions." />
-        <meta name="twitter:image" content="https://quoriumconsulting.com/assets/about-us-banner.jpg" /> 
-        
+        <meta name="twitter:image" content="https://quoriumconsulting.com/images/webp/about-us-banner.webp" />
+
         {/* JSON-LD Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
@@ -94,7 +92,7 @@ const About: React.FC = () => {
               className="relative order-2 lg:order-1 h-full"
             >
               <img
-                src="./images/webp/about-us.webp" // This path is correct if your 'images' folder is in the 'public' directory
+                src="/images/webp/about-us.webp" // This path is correct if your 'images' folder is in the 'public' directory
                 alt="The Quorium Consulting team collaborating in a modern office, planning digital strategies."
                 className="w-full h-full min-h-[400px] object-cover rounded-lg shadow-lg"
                 loading="lazy"

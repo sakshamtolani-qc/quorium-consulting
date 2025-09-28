@@ -58,7 +58,7 @@ const Hero: React.FC = () => {
       "name": "Quorium Consulting",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.quoriumconsulting.com/assets/qc-logo.png"
+        "url": "https://www.quoriumconsulting.com/images/webp/qc.webp"
       }
     }
   };
@@ -77,13 +77,13 @@ const Hero: React.FC = () => {
         <meta property="og:description" content="We build smart, scalable, and secure digital solutions to grow your business. Discover our services." />
         <meta property="og:url" content="https://www.quoriumconsulting.com" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.quoriumconsulting.com/assets/hero-banner.jpg" /> 
+        <meta property="og:image" content="https://www.quoriumconsulting.com/images/webp/hero-banner.jpg" /> 
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Quorium Consulting | IT & AI Solutions" />
         <meta name="twitter:description" content="We build smart, scalable, and secure digital solutions to grow your business." />
-        <meta name="twitter:image" content="https://www.quoriumconsulting.com/assets/hero-banner.jpg" />
+        <meta name="twitter:image" content="https://www.quoriumconsulting.com/images/webp/hero-banner.jpg" />
         
         {/* JSON-LD Structured Data */}
         <script type="application/ld+json">

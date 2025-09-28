@@ -13,7 +13,7 @@ const Loader: React.FC = () => {
           className="mb-8"
         >
           <div className="w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center bg-violet-blue/20 border border-violet-blue/30">
-            <img src="/images/qc-logo.png" alt="Quorium Consulting" className="w-12 h-12" />
+            <img src="/images/webp/qc.webp" alt="Quorium Consulting" className="w-12 h-12" />
           </div>
           <h1 className="text-2xl font-bold text-white">Quorium Consulting</h1>
         </motion.div>

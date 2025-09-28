@@ -107,7 +107,7 @@ const Navbar: React.FC = () => {
                   onClick={() => navigate('/')}
                 >
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center">
-                    <img src="/images/qc-logo.png" alt="Quorium Consulting Logo" /> 
+                    <img src="/images/webp/qc.webp" alt="Quorium Consulting Logo" /> 
                   </div>
                   <span className="text-white font-bold text-sm lg:text-base xl:text-lg tracking-wide">Quorium Consulting</span>
                 </motion.div>
@@ -179,7 +179,7 @@ const Navbar: React.FC = () => {
             onClick={() => navigate('/')}
           >
             <div className="w-6 h-6 rounded-md flex items-center justify-center">
-              <img src="/images/qc-logo.png" alt="Quorium Consulting Logo Mobile" />
+              <img src="/images/webp/qc.webp" alt="Quorium Consulting Logo Mobile" />
             </div>
             <span className="text-white font-bold text-sm sm:text-base lg:text-lg">Quorium Consulting</span>
           </motion.div>
