@@ -85,7 +85,7 @@ const PageTransitionLoader: React.FC = () => {
           >
             <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
               <img 
-                src="/images/qc-logo.png" 
+                src="/images/webp/qc.webp" 
                 alt="Quorium Consulting" 
                 className="w-full h-full object-contain"
               />
@@ -150,3 +150,4 @@ const PageTransitionLoader: React.FC = () => {
 };
 
 export default PageTransitionLoader;
+

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "webp": "node scripts/webp-convert.js"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
@@ -15,7 +16,11 @@
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.8.0"
+    "react-helmet-async": "^2.0.5",
+    "react-router-dom": "^7.8.0",
+    "react-router-sitemap-generator": "^0.0.8",
+    "sitemap": "^8.0.0",
+    "webp": "^0.0.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -23,14 +28,15 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.18",
+    "cwebp-bin": "^8.0.0",
     "eslint": "^9.9.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.11",
+    "glob-cli": "^1.0.0",
     "globals": "^15.9.0",
     "imagemin": "^9.0.1",
-    "imagemin-cli": "^8.0.0",
-    "imagemin-webp": "^8.0.0",
     "postcss": "^8.4.35",
+    "sharp": "^0.34.4",
     "tailwindcss": "^3.4.1",
     "terser": "^5.31.0",
     "typescript": "^5.5.3",
