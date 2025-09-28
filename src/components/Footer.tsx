@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
   const socialLinks = [
     {
       icon: Instagram,
-      href: 'https://www.instagram.com/quoriumconsulting/',
+      href: 'https://www.instagram.com/quorium_consulting/?hl=en',
       label: 'Instagram'
     },
     {
@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
     },
     {
       icon: Twitter,
-      href: 'https://x.com/',
+      href: 'https://x.com/QuoriumC',
       label: 'Twitter'
     }
   ];
@@ -34,9 +34,9 @@ const Footer: React.FC = () => {
     "url": "https://www.quoriumconsulting.com", 
     "logo": "https://www.quoriumconsulting.com/assets/qc-logo.png", 
     "sameAs": [
-      "https://www.instagram.com/quoriumconsulting/",
+      "https://www.instagram.com/quorium_consulting/?hl=en",
       "https://linkedin.com/company/quorium-consulting-qc",
-      "https://x.com/"
+      "https://x.com/QuoriumC"
     ]
   };
 
